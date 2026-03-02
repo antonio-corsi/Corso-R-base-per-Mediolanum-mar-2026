@@ -44,6 +44,7 @@ Come inserire una nuova cella di codice.<br> In tre modi:
 ```{r pulizia}
 rm(list=ls()) # cancellazione dalla memoria di tutte le varibili del global environment (per pulizia)
 library(ISLR) # contiene il dataset Credit (il dataframe usato per gli esempi)
+Credit
 ```
 
 ## Opzioni chunk

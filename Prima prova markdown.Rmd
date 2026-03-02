@@ -1,0 +1,104 @@
+---
+title: "Prima prova markdown"
+author: "Antonio Piemontese"
+date: "2026-03-02"
+output:
+  html_document: 
+    toc: true               # table of content true
+    toc_depth: 3            # up to three depths of headings (specified by #, ## and ###)
+    # number_sections: true   # numbered headlines
+
+editor_options:
+  markdown:
+    wrap: 80
+---
+
+# Introduzione ai notebook
+
+I notebook sono dei file particolari, utilizzati in tutti i principali linguaggi
+di programmazione, che permettono di inserire:
+
+-   **codice**
+-   **testo**
+-   immagini
+-   url internet
+-   ecc
+
+Quando eseguiamo un notebook l'esecuzione è differente a seconda del contenuto;
+in particolare:
+
+-   testo --\> fa il cosiddetto **rendering grafico**, cioè lo formatta secondo
+    i nostri <u>tag</u>
+-   codice --\> lo spedisce all'**interprete R**, che, dietro le quinte, lo
+    esegue e restituisce i risultati a RStudio
+
+# Preliminari
+
+## Celle di codice
+
+```{r setup, include = FALSE}
+## Iniziamo con alcuni settaggi.
+# NB. Il tag `include = FALSE` "prevents code and results from appearing in the finished file. R Markdown still runs
+# the code in the chunk, and the results can be used by other chunks.
+# Per sicurezza e pulizia cancelliamo tutte le variabili di ambiente in memoria (esiti di esecuzioni precedenti dello script).
+knitr::opts_chunk$set(echo = TRUE)
+setwd("C:/Users/Utente/Desktop/salvataggi/SALVATAGGIO DATI/Documents/Seminari/Data Science (corsi)/Corso Python ed R")
+```
+
+## Inserire una cella di codice
+
+Come inserire una nuova cella di codice.<br> 
+In tre modi:
+
+-   premendo la combinazione di caratteri: `ctrl+alt+I`
+-   scrivendo tre backtick con alt+96 seguiti da alt+123 per le due parentesi
+    graffe
+-   copia e incolla di una cella esitente
+
+```{r}
+
+```
+
+
+## Pulizie e caricamenti
+
+```{r pulizia}
+rm(list=ls()) # cancellazione dalla memoria di tutte le varibili del global environment (per pulizia)
+```
+
+## Opzioni chunk
+
+```{r immagine0, echo=FALSE, out.width="50%", fig.cap="A nice image."}
+knitr::include_graphics("opzioni_chunk.png")
+```
+
+## Copilot
+
+Perchè l'icona rossa *Copilot: Not signed in*?<br> ❌ Non è un errore R
+
+❌ Non è legato al chunk R Markdown
+
+❌ Non è legato a attach(Credit)
+
+✅ È solo lo stato del plugin Copilot
+
+Come risolvere.Se vuoi usare Copilot: - Clicca su Copilot: Not signed in - Segui
+la procedura di login con GitHub - Autorizza l’IDE
+
+Se invece non ti interessa usarlo, puoi: - Ignorarlo (non influisce su nulla) -
+Oppure **disabilitare il plugin da `Tools` → `Global Options` → `Copilot`**
+
+# Lettura dataframe
+
+```{r leggi_clienti}
+# occorre installare e importare il package ISLR
+library(ISLR)    # carica in memoria il dataset giocattolo (toy dataset), fornito dal package ISLR, di nome Credit;
+                 # è un dataset di 12 colonne e 400 righe, ogni riga è un cliente della banca;
+                 # è un dataset inventato;
+                 # non ha valori mancanti e non ha outlier;
+
+data(Credit)     # carica in memoria uno dei dataset forniti dal package Credit
+
+head(Credit)     # visualizza le prime righe del dataset
+tail(Credit)     # visualizza le ultime righe del dataset
+```
