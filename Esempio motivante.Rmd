@@ -1,0 +1,87 @@
+---
+title: "Esempio motivante di R in RStudio"
+author: "Antonio Piemontese"
+date: "2026-03-01"
+output:
+  html_document:
+    fig_caption: true
+---
+
+# Preliminari
+
+## Celle di codice
+
+Un notebook è composto di **testo** e **celle di codice**.
+
+## Inserire una cella di codice
+
+Come inserire una nuova cella di codice.<br> In tre modi:
+
+-   premendo la combinazione di caratteri: ctrl+alt+I
+-   scrivendo tre backtick con alt+96 seguiti da alt+123 per le due parentesi graffe
+-   copia e incolla di una cella esitente
+
+```{r}
+
+```
+
+## Pulizie e caricamenti
+
+La prima cella di codice R serve per due operazioni preliminari:
+
+```{r pulizia}
+rm(list=ls()) # cancellazione dalla memoria di tutte le varibili del global environment (per pulizia)
+library(ISLR) # contiene il dataset Credit (il dataframe usato per questo esempio iniziale)
+```
+
+## Opzioni chunk
+
+```{r immagine0, echo=FALSE, out.width="50%", fig.cap="Le opzioni di chunk principali."}
+knitr::include_graphics("opzioni_chunk.png")
+```
+
+Vogliamo che:
+
+-  tutti i chunk abbiano `echo = TRUE`
+-  non siano visualizzati messaggi informativi, ad esempio
+    -   `library(dplyr)`
+    -   --\> Attaching package: ‘dplyr’<br>
+             The following objects are masked from ‘package:stats’:
+-  non siano visualizzati i warning
+-  a meno che noi non cambiamo queste opzioni esplicitamente in un singolo chunk
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+
+## Copilot
+
+Perchè l'icona rossa *Copilot: Not signed in*?<br> ❌ Non è un errore R
+
+❌ Non è legato al chunk R Markdown
+
+❌ Non è legato a attach(Credit)
+
+✅ È solo lo stato del plugin Copilot
+
+Come risolvere.Se vuoi usare Copilot: - Clicca su Copilot: Not signed in - Segui la procedura di login con GitHub - Autorizza l’IDE
+
+Se invece non ti interessa usarlo, puoi: - Ignorarlo (non influisce su nulla) - Oppure **disabilitare il plugin da `Tools` → `Global Options` → `Copilot`**
+
+# Lo scenario della Data Science
+
+```{r immagine1, echo=FALSE, out.width="50%", fig.cap="A nice image."}
+knitr::include_graphics("scenario1.png")
+```
+
+```{r immagine2, echo=FALSE, out.width="50%", fig.cap="A nice image."}
+knitr::include_graphics("scenario2.png")
+```
+
+```{r immagine3, echo=FALSE, out.width="50%", fig.cap="A nice image."}
+knitr::include_graphics("scenario3.png")
+```
