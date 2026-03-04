@@ -6,7 +6,7 @@ output:
   html_document: 
     toc: true               # table of content true
     toc_depth: 3            # up to three depths of headings (specified by #, ## and ###)
-    # number_sections: true   # numbered headlines
+    number_sections: true   # numbered headlines
 
 editor_options:
   markdown:
@@ -44,6 +44,8 @@ Come inserire una nuova cella di codice.<br> In tre modi:
 ```{r pulizia}
 rm(list=ls()) # cancellazione dalla memoria di tutte le varibili del global environment (per pulizia)
 library(ISLR) # contiene il dataset Credit (il dataframe usato per gli esempi)
+head(Credit)
+options(max.print = 50)
 Credit
 ```
 
@@ -467,6 +469,37 @@ vector2 <- c(1, 2, 3, 4)
 data.frame(vector1, vector2)
 ```
 
+# Tipi di dati strutturati
+
+## I vettori
+
+```{r}
+vet <- c(10,20,50,28)
+vet
+vet[1]
+length(vet)
+```
+## Le array
+
+```{r immagine17bis, echo=FALSE, out.width="50%", fig.cap="A nice image."}
+knitr::include_graphics("array_R.png")
+```
+
+## I dataframe
+
+```{r immagine17, echo=FALSE, out.width="50%", fig.cap="A nice image."}
+knitr::include_graphics("df1.png")
+```
+
+```{r immagine18, echo=FALSE, out.width="50%", fig.cap="A nice image."}
+knitr::include_graphics("df2.png")
+```
+# I package
+
+```{r immagine14bis, echo=FALSE, out.width="50%", fig.cap="A nice image."}
+knitr::include_graphics("install_vs_import.png")
+```
+
 # Analisi esplorativa dei dati
 
 ```{r immagine15, echo=FALSE, out.width="50%", fig.cap="A nice image."}
@@ -480,15 +513,8 @@ C'è una grande quantità di statistiche disponibili in R (base o contributed).
 ```{r immagine16, echo=FALSE, out.width="50%", fig.cap="A nice image."}
 knitr::include_graphics("EDA_datapizza.png")
 ```
-
-# I dataframe
-
-```{r immagine17, echo=FALSE, out.width="50%", fig.cap="A nice image."}
-knitr::include_graphics("df1.png")
-```
-
-```{r immagine18, echo=FALSE, out.width="50%", fig.cap="A nice image."}
-knitr::include_graphics("df2.png")
+```{r immagine16bis, echo=FALSE, out.width="50%", fig.cap="A nice image."}
+knitr::include_graphics("sinossi_comandi_R_EDA.png")
 ```
 
 ```{r}
@@ -970,7 +996,7 @@ sqrt(sum(scale(X,center=T,scale=F)^2)/(length(X)-1)) # formula della deviazione 
 m <- dim(Credit)[1]
 n <- dim(Credit)[2]
 m;n                     # m,n è notazione di algebra lineare.
-                        # nel machine learning si usa in genere n,p (ad es. nel licorrelazione ISLR)
+                        # nel machine learning si usa in genere n,p (ad es. nel libro ISLR)
 
 sd.set <- double(m)                   # inizializzazione a zero del vettore (più veloce)
 
@@ -1230,7 +1256,9 @@ sum(sleep$NonD,na.rm=T)    # ok! (la somma sui 62-14 valori di 'NonD' presenti)
 
 # omit NAs sul dataset PIENO
 sleep = na.omit(sleep)
-View(sleep) # ??
+if (interactive()) {
+  ?View(sleep) # ??
+}
 dim(sleep)
 
 # e nei nostri dataset?
@@ -2822,7 +2850,9 @@ difftime(today,dob,units="mins")
 # conversione da formato inerno a stringa (il contrario):
 as.character(startdate)
 
-help(as.Date)    # more on this topic.
+if (interactive()) {
+  ?help(as.Date)    # more on this topic.
+}
 # i package 'lubridate' e 'timeDate' hanno molte funzioni per la gestione delle date.
 
 # as.POSIXct() # Verzani p. 19
@@ -2894,7 +2924,7 @@ class(findata)
 
 ## Help
 
-```{r help}
+```{r help, eval = FALSE}
 # A) ricerca ESATTA nelle pagine dell'HELP di R (per: funzioni R, dataset, package base o caricati):
 # tab "Help" (con topic e subtopic)
 help("lm")
@@ -2911,7 +2941,10 @@ help.search("^glm") # ricerca nei package installati
 help.start()  # --> la pagina inziale dell'help
 
 data()        # --> lista di tutti i dataset disponibili nei package attualmente caricati
-library(help="ISLR") # --> vedi anche Indice (contiene i datatset)
+
+if (interactive()) {
+  library(help="ISLR") # --> vedi anche Indice (contiene i dataset)
+} 
 library(ISLR) # --> dataset in più (alcuni dei nostri, per questo corso)
 
 # per RStudio:
@@ -3162,7 +3195,10 @@ The `matrix()` function can be used to create a matrix of numbers. Before we use
 the `matrix()` function, we can learn more about it:
 
 ```{r chunk6}
-?matrix
+if (interactive()) {
+  ?matrix
+}
+
 ```
 
 The help file reveals that the `matrix()` function takes a number of inputs, but
@@ -3406,7 +3442,9 @@ function can also be used to view the first few rows of the data.
 
 ```{r chunk25}
 Auto <- read.table("Auto.data")
-View(Auto)
+if (interactive()) {
+  View(Auto)
+} 
 head(Auto)
 ```
 
@@ -3427,7 +3465,9 @@ should be treated as a missing element of the data matrix.
 
 ```{r chunk26}
 Auto <- read.table("Auto.data", header = T, na.strings = "?", stringsAsFactors = T)
-View(Auto)
+if (interactive()) {
+  ?View(Auto) 
+}
 ```
 
 The `stringsAsFactors = T` argument tells `R` that any variable containing
@@ -3438,7 +3478,9 @@ variable. An easy way to load data from Excel into `R` is to save it as a csv
 
 ```{r chunk27}
 Auto <- read.csv("Auto.csv", na.strings = "?", stringsAsFactors = T)
-View(Auto)
+if (interactive()) {
+  ?View(Auto) 
+}
 dim(Auto)
 Auto[1:4, ]
 ```
