@@ -23,7 +23,7 @@ editor_options:
 # the code in the chunk, and the results can be used by other chunks.
 # Per sicurezza e pulizia cancelliamo tutte le variabili di ambiente in memoria (esiti di esecuzioni precedenti dello script).
 knitr::opts_chunk$set(echo = TRUE)
-setwd("C:/Users/Utente/Desktop/salvataggi/SALVATAGGIO DATI/Documents/Seminari/Data Science (corsi)/Corso Python ed R")
+# setwd("C:/Users/Utente/Desktop/salvataggi/SALVATAGGIO DATI/Documents/Seminari/Data Science (corsi)/Corso Python ed R")
 ```
 
 ## Inserire una cella di codice

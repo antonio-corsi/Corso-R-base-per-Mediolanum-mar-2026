@@ -1,0 +1,255 @@
+---
+title: "prima_prova"
+author: "Antonio Piemontese"
+date: "2026-03-04"
+output:
+  html_document: 
+    toc: true               # table of content true
+    toc_depth: 3            # up to three depths of headings (specified by #, ## and ###)
+    number_sections: true   # numbered headlines
+
+editor_options:
+  markdown:
+    wrap: 80
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)      # per default imposta echo = TRUE --> knit visualizza il codice
+knitr::opts_knit$set(                   # imposta la directory corrente per TUTTI i chunk;
+                                        # al  contrario, la 'setwd()' dentro un chunk modifica la directory corrente solo per quel chunk
+  root.dir = "C:/Users/Utente/Desktop/salvataggi/SALVATAGGIO DATI/Documents/Seminari/Data Science (corsi)/Repository GitHub corsi/Corso-R-base-per-Mediolanum-mar-2026"
+)
+```
+
+# Assegnazioni
+
+```{r assegna}
+a = 1
+a
+typeof(a)             # classe
+a = "pippo"
+a
+typeof(a)
+
+a
+# consuetudine R (shorcut: alt+meno)
+a <- 10
+b <- "pluto"
+
+a = 1
+b = 2
+```
+
+```{r lettura_clienti}
+df.clienti <- read.csv("clienti.csv", sep = ";")
+df.clienti
+```
+
+# Plot
+
+Plot vuol dire grafico.<br> Vediamo due tra i plot più usati: lo
+[**scatterplot**](https://en.wikipedia.org/wiki/Scatter_plot) e il
+[**boxplot**](https://it.wikipedia.org/wiki/Diagramma_a_scatola_e_baffi).
+
+```{r plot}
+plot(df.clienti$Cliente, df.clienti$Fatturato)
+boxplot(df.clienti$Fatturato)
+```
+
+L'analisi e la modellazione dati consta di due fasi principali che sono:
+
+-   **l'analisi esplorativa dei dati**
+-   la **modellazione predittiva**
+
+Possiamo lavorare su diversi **dataset finanziari** resi disponibili dal package
+`ISLR2` (già pronti).<br> Normalmente, a parte questo caso particolare, i
+dataset sono caricati in R/RStudio in [formato
+csv](https://it.wikipedia.org/wiki/Comma-separated_values).
+
+Per prima cosa carichiamo i dataset:
+
+```{r ISLR2}
+library("ISLR2")
+```
+
+Il comando `library(ISLR2)` può dare un messaggio relativo al *mascheramento*,
+cioè due oggetti in memoria (ad es. nel *global environment*) hanno lo stesso
+nome. Sono la stessa cosa? R ci sta dicendo che, per quel nome (di variabile, di
+dataframe, di funzione) userà il secondo (l'ultimo, quello caricato). R/RStudio
+ci segnala questa sovrapposizione perchè spesso noi non ne abbiamo contezza.
+
+# I dataset di ISLR2
+
+```{r dataset}
+data()                  # --> lista di tutti i dataset disponibili nei package attualmente caricati
+library(help="ISLR2")   # lista anche dei dataset disponibili (sotto Indice) per quel package
+data(Credit)            # caricamento in memoria di questo dataset
+```
+
+Per questi primi esempi lavoreremo con il dataset `Credit` di ISLR2.<br>
+La struttura dei dataset forniti dai package sono disponibili nell'help.
+
+# Analisi esplorativa dei dati (EDA)
+
+Seguiremo la struttura di comandi qui sotto indicata, a parte il caricamento iniziale dei dati (con la funzione `read.csv`) perchè usiamo dataset già  pre-caricati (grazie a `ISLR2`):
+
+```{r sinossi_EDA, echo=FALSE, out.width="50%", fig.cap="A nice image."}
+knitr::include_graphics("sinossi_comandi_R_EDA.png")
+```
+
+
+```{r esame}
+# le prime righe
+head(Credit,10)          # il default di num.righe è 6
+# le ultime righe
+tail(Credit)
+# a campione (con la combinazione di caratteri alt+invio, anzichè la solita ctrl+invio)
+Credit[sample(nrow(Credit), 10), ]      # campionamento senza seme iniziale - vedi più avanti
+
+```
+```{r vettore}
+Credit$Income     # fornisce il VETTORE dei 400 income;
+                  # il vettore ha 1 dimensione, il dataframe ha 2 dimensioni
+```
+
+```{r struttura}
+str(Credit)        # la struttura del dataframe: obs sono le righe, variables sono le colonne
+dim(Credit)        # le dimensioni del dataframe
+#attenzione: la dimensione di un vettore si verifica con la funzione 'length'
+length(Credit$Income)
+nrow(Credit)      # il #righe del dataframe
+ncol(Credit)      # il #colonne del dataframe
+
+# attenzione:
+# possiamo ottenere il #righe o #colonne anche in questo modo (utile per imparare), cioè con il subsetting del vettorfe 'dim'
+dim(Credit)[1]
+dim(Credit)[2]
+
+```
+Vediamo ora il subsetting di dati **numerici** (quantitativi)
+
+```{r subsetting}
+
+# subsetting di riga
+Credit[1:20,]         # le prime 20 righe
+head(Credit,20)       # stesso output
+
+Credit[200:210,]      # 10 righe a metà
+
+# nota1:
+# se #righe o #colonne NON è valorizzato --> tutte le righe o tutte le colonne
+
+# nota2:
+# 200:210 è un RANGE (senza buchi)
+
+# nota3:
+# se si fa subsetting solo con un valore, R lo interpreta come #colonne:
+Credit[3]             # subsetting della colonna 3 (rating)
+
+# subsetting di colonna
+Credit[,2]            # i 400 valori della colonna 2 (Limit) --> è un VETTORE
+Credit[,1:3]          # le prime 3 colonne complete --> è una MATRICE
+
+# subsetting di un vettore
+Credit$Income[1:6]    # i primi 6 elementi
+head(Credit$Income)   # la stessa cosa
+
+Credit$Income[51:60]  # i primi 6 elementi
+
+# subsetting misto (righe e colonne)
+Credit[21:30,1:3]     # estrae le righe da 21 a 30 e le prime 3 colonne
+
+
+# subsetting particolare (già visto prima): il range di righe da subsettare (estrarre) è dato da una funzione
+Credit[sample(nrow(Credit), 10), ]      # campionamento senza seme iniziale
+
+# nota sulla sample e su TUTTE le funzioni che incorporano al loro interno un campionamento (magari in modo nascosto)
+set.seed(20000)                         # impostazione del seme --> il comportamento della funzione diventa RIPRODUCIBILE, cioè ad ogni sessione R 
+                                        # e per ogni utente del codice si ottiene sempre lo stesso risultato.
+
+                                        # NB. Potete impostare il seme a QUALSIASI valore numerico, il valore in sè NON ha importanza: 1, 123, 40000, 
+                                        # la vs data di nascita newl formato GGMMAA. L'unico vincolo è che sia un numero.
+
+Credit[sample(nrow(Credit), 10), ]      # campionamento con seme iniziale (modifica il seme stesso)
+
+# attenzione: per ottenere la riproducibilità dovete, in questo caso, rieseguire ogni volta (ad es. con alt+invio) le due righe, non solo la sample
+```
+
+I nomi delle colonne del dataframe
+
+```{r nomi}
+names(Credit)      # i nomi delle colonne
+row.names(Credit)  # per default è l'ID della riga
+```
+Possiamo valorizzare i nomi dei clienti (cioè i `row.names`) in questo modo (utile per imparare):
+
+```{r nomi_clienti}
+set.seed(123)   # set del seme
+
+# creiamo due liste
+# la "c" sta per "components" (del vettore o della lista)
+nomi <- c("Luca","Marco","Giulia","Anna","Francesca","Paolo","Andrea","Sara",
+          "Davide","Elena","Matteo","Chiara","Alessandro","Martina","Simone",
+          "Laura","Stefano","Valentina","Giorgio","Silvia","Roberto","Ilaria",
+          "Federico","Beatrice","Fabio","Claudia","Riccardo","Alessia",
+          "Daniele","Marta")
+
+length(nomi)
+
+cognomi <- c("Rossi","Russo","Ferrari","Esposito","Bianchi","Romano","Colombo",
+             "Ricci","Marino","Greco","Bruno","Gallo","Conti","De Luca",
+             "Mancini","Costa","Giordano","Rizzo","Lombardi","Moretti",
+             "Barbieri","Fontana","Santoro","Mariani","Rinaldi","Caruso",
+             "Ferrara","Galli","Martini","Leone")
+
+length(cognomi)
+
+# crea la lista nomi-cognomi campionando dalle due liste precedenti e poi unendole
+comb <- expand.grid(nome = nomi, cognome = cognomi, stringsAsFactors = FALSE)
+tutti_nomi <- unique(paste(comb$nome, comb$cognome))  # assicura unicità
+
+
+stopifnot(length(tutti_nomi) >= 400)
+
+# il campionamento
+clienti <- sample(tutti_nomi, 400, replace = FALSE)
+
+# verifiche
+stopifnot(anyDuplicated(clienti) == 0)
+
+# controllo duplicati
+sum(duplicated(clienti))
+length(unique(clienti))
+length(clienti)
+
+
+# ora possiamo valorizzare row.name
+row.names(Credit) <- clienti
+head(Credit)
+```
+
+Alternativamente, si potrebbe creare una nuova colonna con i nomi dei clienti, in questo modo:
+
+```{r nomi_clienti_2}
+Credit["Nome"] <- clienti         # per default R la mette in ultima posizione
+
+# la forzo in prima posizione, in questo modo:
+setdiff(names(Credit), "Nome")    # questa funzione restituisce i nomi delle altre colonne (tutte tranne una specifica, qui "Nome")
+Credit <- Credit[, c("Nome", setdiff(names(Credit), "Nome"))]
+                                  # riassegna a Credit il subsetting di colonna di Credit nel quale le colonne sono ordinate in altro modo: 
+                                  # prima "Nome" e poi le altre, quelle fornite dalla funzione 'setdiff
+
+row.names(Credit) <- NULL         # li annullo (i nomi sono già in una colonna specifica)
+head(Credit)
+```
+
+A questo punto, poichè abbiamo modificato il dataset, lo dobbiamo salvare, altrimenti la prossima volta che carichiamo `Credit` (da ISLR2) perderemo queste modifiche.
+
+```{r salva}
+write.csv(Credit,"Credit_modificato.csv")        # lo salva nella directory corrente
+Credit_mod <- read.csv("Credit_modificato.csv")  # lo leggiamo
+head(Credit_mod)                                 # le prime righe
+```
+
+
+
